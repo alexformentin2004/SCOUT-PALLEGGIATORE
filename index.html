@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Setter Scout Touch Mobile V8 Scroll Top</title>
+<style>
+:root{
+  --bg:#eef3f8;--card:#fff;--line:#d8e1ee;--text:#172033;--muted:#64748b;
+  --blue:#1f6feb;--purple:#7b42f6;--cyan:#0e7490;--dark:#111827;
+  --sharp:#00a650;--plus:#35a853;--bang:#f2b400;--minus:#f28c28;--mur:#b3261e;--err:#d90000;
+  --ok:#0f8a42;--warn:#b77900;--safe:env(safe-area-inset-bottom,0px)
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);padding-bottom:calc(78px + var(--safe))}
+button,input,select{font-family:inherit}
+button{touch-action:manipulation;cursor:pointer}
+.app{max-width:780px;margin:auto}
+.header{position:sticky;top:0;z-index:10;background:rgba(238,243,248,.96);backdrop-filter:blur(10px);padding:8px;border-bottom:1px solid var(--line)}
+h1{font-size:18px;margin:0}.titlebar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px}.badge{font-size:11px;background:var(--blue);color:#fff;border-radius:999px;padding:5px 8px;font-weight:900;white-space:nowrap}
+.ctxgrid{display:grid;grid-template-columns:1fr .75fr 1fr .8fr;gap:6px}.ctx{background:#fff;border:1px solid var(--line);border-radius:12px;text-align:center;padding:7px 4px}.ctx .lab{font-size:10px;color:var(--muted);font-weight:900}.ctx .val{font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.page{display:none;padding:8px}.page.active{display:block}.card,.block{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:8px;box-shadow:0 1px 3px #0001;scroll-margin-top:102px}.block.complete{border-color:var(--ok);box-shadow:0 0 0 2px #0f8a421a}.scroll-target{animation:pulseTarget .45s ease}@keyframes pulseTarget{0%{box-shadow:0 0 0 0 #1f6feb99}100%{box-shadow:0 0 0 10px #1f6feb00}}
+h2{font-size:16px;margin:0 0 8px}h3{font-size:14px;margin:10px 0 6px}.small{font-size:11px;color:var(--muted);font-weight:900;margin-bottom:3px}.hint{font-size:12px;color:var(--muted);line-height:1.35}.dangerText{color:var(--err);font-weight:900}.okText{color:var(--ok);font-weight:900}
+input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:14px;min-height:42px}.setupgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.row{display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;border-radius:13px;min-height:44px;padding:10px 12px;font-weight:900;color:var(--text)}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn.bad{background:var(--err);color:#fff;border-color:var(--err)}.btn.warn{background:var(--minus);color:#fff;border-color:var(--minus)}.btn.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.btn.full{width:100%}.btn:focus-visible,.pick:focus-visible,.touch:focus-visible,.nav:focus-visible{outline:4px solid #ff0;outline-offset:2px}
+.selgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.selgrid.three{grid-template-columns:repeat(3,1fr)}.pick{border:0;border-radius:13px;min-height:46px;color:#fff;font-size:15px;font-weight:900}.pick.active,.touch.active{outline:4px solid #ff0;transform:scale(.98)}.SET{background:var(--blue)}.POS{background:var(--purple)}.PHASE{background:#44546a}
+.seq{background:#f0f6ff;border:2px solid var(--blue);border-radius:15px;padding:9px;font-size:16px;font-weight:900;line-height:1.35;margin-bottom:8px}.seq.complete{background:#ecfff3;border-color:var(--ok)}.missing{color:var(--err)}.touchgrid{display:grid;gap:7px}.ingrid{grid-template-columns:repeat(5,1fr)}.destgrid{grid-template-columns:repeat(3,1fr)}.outgrid{grid-template-columns:repeat(2,1fr)}.touch{border:0;border-radius:15px;min-height:62px;color:#fff;font-weight:900;font-size:18px;box-shadow:0 2px 6px #0002}.touch small{display:block;font-size:9px;font-weight:800}.INSHARP{background:var(--sharp)}.INPLUS{background:#3f7f14}.INBANG{background:#e7a35f;color:#111}.INMINUS{background:#b95c1c}.INEQ{background:var(--err)}.DESTB{background:#1838ff}.DESTO{background:#ffe500;color:#111}.DESTC{background:#39ff00;color:#111}.DESTP{background:#f01ef3}.DEST8{background:#f00000}.DEST2{background:var(--dark)}.KILL{background:var(--sharp)}.CONT{background:var(--blue)}.COP{background:var(--purple)}.FREE{background:var(--minus)}.MUR{background:var(--mur)}.ERR{background:var(--err)}
+.quickbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:8px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.metrics.five{grid-template-columns:repeat(5,1fr)}.metric{background:#fff;border:1px solid var(--line);border-radius:13px;text-align:center;padding:8px;min-width:0}.metric .num{font-size:20px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.metric .lbl{font-size:10px;color:var(--muted);font-weight:900}.alert{display:none;border:2px solid var(--bang);background:#fff8df;border-radius:14px;padding:9px;font-size:12px;font-weight:900;margin-top:8px}.tablewrap{max-height:55vh;overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}th,td{padding:7px 5px;border-bottom:1px solid #eef2f7;text-align:left;white-space:nowrap}th{background:#f8fbff;position:sticky;top:0}.numcell{text-align:right}.editbtn{border:0;border-radius:10px;background:var(--blue);color:#fff;font-weight:900;padding:6px 8px;font-size:11px}.muted{color:var(--muted)}
+.last-action{display:grid;gap:6px}.last-line{font-size:13px;font-weight:900;background:#f8fbff;border:1px solid var(--line);border-radius:12px;padding:8px;line-height:1.35}.last-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.compact-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}.barrow{display:grid;grid-template-columns:92px 1fr 46px;gap:7px;align-items:center;font-size:12px;font-weight:900;margin:6px 0}.bar{height:18px;border-radius:999px;background:#edf2f7;overflow:hidden;border:1px solid var(--line)}.bar>span{display:block;height:100%;background:var(--blue);min-width:2px}.bar.warn>span{background:var(--bang)}.bar.err>span{background:var(--err)}.bar.ok>span{background:var(--ok)}.heat{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.heatcell{border:1px solid var(--line);border-radius:12px;padding:8px;background:#fff;text-align:center}.heatcell strong{display:block;font-size:15px}.heatcell span{font-size:10px;color:var(--muted);font-weight:900}.heatcell.hot{background:#fff1d1;border-color:#f2b400}.heatcell.danger{background:#ffe8e8;border-color:#e00000}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:100;display:none;align-items:flex-end;justify-content:center}.modal.active{display:flex}.modal-card{width:100%;max-width:780px;max-height:88vh;overflow:auto;background:#fff;border-radius:18px 18px 0 0;padding:12px;box-shadow:0 -8px 30px rgba(0,0,0,.25)}.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pdf-only{display:none}
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#fff;border-top:1px solid var(--line);padding:7px 8px calc(7px + var(--safe));display:flex;justify-content:center}.bottom-inner{max-width:780px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.nav{border:0;border-radius:14px;background:#eef3f8;min-height:50px;font-size:11px;font-weight:900;color:var(--muted)}.nav.active{background:var(--blue);color:#fff}.toast{position:fixed;left:50%;bottom:calc(92px + var(--safe));transform:translateX(-50%);background:#111827;color:#fff;border-radius:18px;padding:12px 15px;font-weight:900;font-size:13px;z-index:50;display:none;box-shadow:0 4px 18px #0004;max-width:min(92vw,720px);text-align:center}.toast.ok{background:var(--ok)}.toast.err{background:var(--err)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#blockAtt{scroll-margin-top:112px}
+
+/* Campo touch stilizzato V6 */
+.court-panel{background:#f8fbff;border:1px solid var(--line);border-radius:16px;padding:10px;margin-top:4px;grid-column:1 / -1;width:100%;max-width:100%}
+.court-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px;font-size:12px;font-weight:900;color:var(--muted)}
+.court-current{color:var(--text);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.court-touch{position:relative;display:block;width:100%;height:auto;aspect-ratio:2 / 1;min-height:180px;max-height:none;border:0;border-radius:18px;padding:0;overflow:hidden;background:#dff5e8;box-shadow:inset 0 0 0 4px #fff,0 2px 8px #0001;touch-action:manipulation;color:inherit}
+.court-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.court-svg .outer{fill:#dff5e8;stroke:#172033;stroke-width:3}
+.court-svg .zone{fill:rgba(255,255,255,.22);stroke:#172033;stroke-width:1.2;stroke-dasharray:5 4}
+.court-svg .line{stroke:#172033;stroke-width:2;opacity:.65}
+.court-svg .net{stroke:#172033;stroke-width:5;opacity:.85}
+.court-svg .attack{stroke:#172033;stroke-width:2;opacity:.42;stroke-dasharray:9 5}
+.court-svg text{font-size:4px;font-weight:900;fill:#172033;opacity:.82;text-anchor:middle;dominant-baseline:middle}
+.court-svg .smalltxt{font-size:3.2px;opacity:.65}
+.court-hint{position:absolute;left:10px;right:10px;bottom:10px;background:rgba(255,255,255,.90);border:1px solid var(--line);border-radius:13px;padding:7px;text-align:center;font-size:11px;color:var(--muted);font-weight:900;pointer-events:none}
+.court-marker{position:absolute;width:22px;height:22px;border-radius:999px;background:#111827;border:3px solid #fff;box-shadow:0 2px 10px #0006;transform:translate(-50%,-50%);pointer-events:none;z-index:2}.court-marker:after{content:"";position:absolute;inset:-8px;border:2px solid #11182766;border-radius:999px}
+.court-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px}.court-legend span{border:1px solid var(--line);border-radius:9px;background:#fff;padding:6px 4px;text-align:center;font-size:10px;font-weight:900;color:var(--muted)}
+.court-note{font-size:11px;color:var(--muted);font-weight:900;margin-top:7px;line-height:1.3}
+@media(max-width:460px){.court-touch{aspect-ratio:1.95 / 1;min-height:150px;height:auto;max-height:none}.court-legend{grid-template-columns:repeat(2,1fr)}}
+
+@media print{body{background:#fff!important;padding:0!important}.header,.bottom,.toast,.page:not(#page-results),#page-results .btn,.no-print{display:none!important}#page-results{display:block!important;padding:0!important}.card{box-shadow:none!important;border:0!important;margin:0 0 10px!important}.tablewrap{max-height:none!important;overflow:visible!important;border:1px solid #ddd!important}.pdf-only{display:block!important}th{position:static!important}.bar>span{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+@media(orientation:landscape) and (max-height:540px){.liveblocks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.touch{min-height:50px;font-size:16px}.ingrid,.outgrid{grid-template-columns:1fr}.ctx{padding:5px}.ctx .val{font-size:16px}.last-actions{grid-template-columns:1fr}}
+@media(max-width:460px){.metrics.five{grid-template-columns:repeat(2,1fr)}.touch{font-size:16px;min-height:58px}.destgrid{grid-template-columns:repeat(2,1fr)}.ingrid{grid-template-columns:repeat(3,1fr)}.ctx .val{font-size:16px}.last-actions,.compact-actions{grid-template-columns:1fr}.barrow{grid-template-columns:78px 1fr 40px}.modal-grid{grid-template-columns:1fr}.court-touch{aspect-ratio:1.95 / 1;min-height:150px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header" role="banner">
+  <div class="titlebar"><h1>Setter Scout Touch</h1><span class="badge" aria-label="Versione Mobile 5">Mobile V6 Campo</span></div>
+  <div class="ctxgrid" aria-label="Contesto attivo">
+    <div class="ctx"><div class="lab">PAL</div><div class="val" id="ctxSetter">—</div></div>
+    <div class="ctx"><div class="lab">POS</div><div class="val" id="ctxPos">—</div></div>
+    <div class="ctx"><div class="lab">FASE</div><div class="val" id="ctxPhase">—</div></div>
+    <div class="ctx"><div class="lab">SET/R</div><div class="val" id="ctxRally">1/1</div></div>
+  </div>
+</header>
+<main>
+<section id="page-live" class="page active" aria-labelledby="liveTitle">
+  <div class="card"><h2 id="liveTitle">Contesto attivo</h2><div class="selgrid" id="setterBtns"></div><h3>Posizione</h3><div class="selgrid three" id="posBtns"></div><h3>Fase</h3><div class="selgrid" id="phaseBtns"></div></div>
+  <div class="seq" id="currentLine" aria-live="polite">Scegli IN → DEST → ATTACCANTE → ESITO</div>
+  <div class="liveblocks">
+    <div class="block" id="blockInput"><h2>1. IN</h2><div class="touchgrid ingrid" id="inputBtns"></div></div>
+    <div class="block" id="blockDest"><h2>2. DEST</h2><div class="touchgrid destgrid" id="destBtns"></div><h3 id="blockAtt">Attaccante</h3><div class="touchgrid destgrid" id="attBtns"></div></div>
+    <div class="block" id="blockOutcome"><h2>3. ESITO</h2><div class="touchgrid outgrid" id="outBtns"></div></div>
+  </div>
+  <div class="quickbar"><button class="btn" onclick="Actions.nextRally()" aria-label="Aumenta rally">+ Rally</button><button class="btn warn" onclick="Actions.clearCurrent()">Pulisci</button><button class="btn bad" onclick="Actions.undo()">Annulla</button></div>
+  <div class="card last-action" id="lastActionCard"><h2>Ultima azione</h2><div class="last-line" id="lastActionLine">Nessuna azione registrata.</div><div class="last-actions"><button class="btn primary" onclick="Actions.editLast()">Modifica ultima</button><button class="btn" onclick="Actions.quickOutcomeLast()">Cambia esito</button><button class="btn" onclick="Actions.repeatLastContext()">Ripeti situazione</button></div></div>
+  <div class="card"><h2>Mini stats</h2><div class="metrics"><div class="metric"><div class="num" id="miniCount">0</div><div class="lbl">Azioni</div></div><div class="metric"><div class="num" id="miniEff">0%</div><div class="lbl">Eff.</div></div><div class="metric"><div class="num" id="miniTop">—</div><div class="lbl">Top</div></div></div><div id="miniAlert" class="alert"></div></div>
+</section>
+<section id="page-setup" class="page" aria-labelledby="setupTitle"><div class="card"><h2 id="setupTitle">Setup partita</h2><div class="setupgrid"><div><div class="small">Squadra</div><input id="teamName" value="NOI" aria-label="Nome squadra"></div><div><div class="small">Avversarie</div><input id="oppName" value="LORO" aria-label="Nome avversarie"></div><div><div class="small">Set</div><input id="setNum" type="number" value="1" min="1"></div><div><div class="small">Rally</div><input id="rallyNum" type="number" value="1" min="1"></div><div><div class="small">Pal 1</div><input id="setter1" value="8"></div><div><div class="small">Pal 2</div><input id="setter2" value="12"></div><div><div class="small">Att 1</div><input id="att1" value="B1"></div><div><div class="small">Att 2</div><input id="att2" value="B2"></div><div><div class="small">Att 3</div><input id="att3" value="O"></div><div><div class="small">Att 4</div><input id="att4" value="C1"></div><div><div class="small">Att 5</div><input id="att5" value="C2"></div><div><div class="small">Note</div><input id="matchNote"></div><div><div class="small">Auto reset</div><select id="autoReset"><option value="yes">Sì</option><option value="no">No</option></select></div><div><div class="small">Auto rally</div><select id="autoRally"><option value="yes">Sì</option><option value="no">No</option></select></div><div><div class="small">Vibrazione</div><select id="vibration"><option value="yes">Sì</option><option value="no">No</option></select></div><div><div class="small">Soglia prevedibilità</div><select id="predMin"><option value="3">3 azioni</option><option value="4" selected>4 azioni</option><option value="5">5 azioni</option></select></div></div><div class="row" style="margin-top:10px"><button class="btn primary full" onclick="Actions.applySetup();UI.showPage('live')">APPLICA E VAI LIVE</button></div></div><div class="card"><h2>Salva / Export</h2><p class="hint">La V5 salva automaticamente dopo ogni azione o modifica. I pulsanti sotto servono per backup e trasferimento.</p><div class="row"><button class="btn primary" onclick="Storage.saveState(true)">Salva ora</button><button class="btn" onclick="Storage.loadState(true)">Carica</button><button class="btn" onclick="Export.csv()">CSV</button><button class="btn" onclick="Export.json()">JSON</button><label class="btn">Import<input type="file" accept=".json" style="display:none" onchange="Storage.importJSON(this)"></label><button class="btn bad" onclick="Actions.resetAll()">Reset</button></div></div></section>
+<section id="page-log" class="page" aria-labelledby="logTitle"><div class="card"><h2 id="logTitle">Log</h2><div class="compact-actions"><button class="btn primary" onclick="Actions.editLast()">Modifica ultima</button><button class="btn" onclick="Actions.quickOutcomeLast()">Cambia esito ultima</button><button class="btn bad" onclick="Actions.undo()">Annulla ultima</button></div><div class="tablewrap" style="margin-top:8px"><table><thead><tr><th>#</th><th>Mod.</th><th>Set</th><th>Rally</th><th>Pal</th><th>Pos</th><th>Fase</th><th>IN</th><th>IN XY</th><th>Dest</th><th>DEST XY</th><th>Att</th><th>Esito</th></tr></thead><tbody id="logBody"></tbody></table></div></div></section>
+<section id="page-results" class="page" aria-labelledby="resultsTitle"><div class="card"><div class="pdf-only"><h1>Setter Scout Touch - Report risultati</h1><p id="pdfMeta"></p></div><h2 id="resultsTitle">Risultati</h2><button class="btn primary full" onclick="Stats.calculate(true)">Calcola</button><button class="btn full" style="margin-top:7px" onclick="Export.report()">ESPORTA REPORT STAMPABILE / PDF</button><div class="metrics five" style="margin-top:8px"><div class="metric"><div class="num" id="mTotal">0</div><div class="lbl">Alzate</div></div><div class="metric"><div class="num" id="mInPos">0%</div><div class="lbl">IN buoni</div></div><div class="metric"><div class="num" id="mKill">0%</div><div class="lbl">Kill</div></div><div class="metric"><div class="num" id="mEff">0%</div><div class="lbl">Eff.</div></div><div class="metric"><div class="num" id="mErr">0</div><div class="lbl">Errori</div></div></div></div><div class="card"><h2>Grafici rapidi</h2><h3>Distribuzione destinazioni</h3><div id="destBars"></div><h3>Esiti</h3><div id="outBars"></div><h3>Heatmap rotazioni</h3><div id="rotHeat" class="heat"></div></div><div class="card"><h2>Distribuzione per destinazione</h2><div class="tablewrap"><table><thead><tr><th>Dest</th><th>Tot</th><th>%</th><th>K</th><th>E</th><th>M</th><th>Eff</th></tr></thead><tbody id="destStats"></tbody></table></div></div><div class="card"><h2>Per palleggiatore</h2><div class="tablewrap"><table><thead><tr><th>Pal</th><th>Tot</th><th>IN+</th><th>Kill</th><th>Eff</th><th>Top dest</th></tr></thead><tbody id="setterStats"></tbody></table></div></div><div class="card"><h2>Per attaccante</h2><div class="tablewrap"><table><thead><tr><th>Att</th><th>Tot</th><th>Kill</th><th>Err</th><th>Mur</th><th>Eff</th></tr></thead><tbody id="attStats"></tbody></table></div></div><div class="card"><h2>Per qualità IN</h2><div class="tablewrap"><table><thead><tr><th>IN</th><th>Tot</th><th>Top dest</th><th>Kill</th><th>Eff</th></tr></thead><tbody id="inputStats"></tbody></table></div></div><div class="card"><h2>Prevedibilità</h2><p class="hint">La V5 valuta solo situazioni con almeno la soglia scelta nel setup.</p><div class="tablewrap"><table><thead><tr><th>Situazione</th><th>Tot</th><th>Top</th><th>%</th><th>Val.</th></tr></thead><tbody id="predictStats"></tbody></table></div></div></section>
+</main></div>
+<div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle"><div class="modal-card"><h2 id="editTitle">Modifica azione</h2><div class="small">Puoi correggere una riga senza cancellarla.</div><input type="hidden" id="editId"><div class="modal-grid" style="margin-top:8px"><div><div class="small">Palleggiatore</div><select id="editSetter"></select></div><div><div class="small">Posizione</div><select id="editPosition"></select></div><div><div class="small">Fase</div><select id="editPhase"></select></div><div><div class="small">Ingresso</div><select id="editInput"></select></div><div><div class="small">Destinazione</div><select id="editDestination"></select></div><div><div class="small">Attaccante</div><select id="editAttacker"></select></div><div><div class="small">Esito</div><select id="editOutcome"></select></div></div><div class="row" style="margin-top:10px"><button class="btn primary" onclick="Actions.saveEdit()">SALVA MODIFICA</button><button class="btn" onclick="UI.closeEdit()">ANNULLA</button></div></div></div>
+<div class="modal" id="outcomeModal" role="dialog" aria-modal="true" aria-labelledby="outcomeTitle"><div class="modal-card"><h2 id="outcomeTitle">Cambia esito ultima azione</h2><div class="touchgrid outgrid" id="quickOutcomeBtns"></div><div class="row" style="margin-top:10px"><button class="btn" onclick="UI.closeOutcome()">ANNULLA</button></div></div></div>
+<div class="bottom"><div class="bottom-inner" role="navigation" aria-label="Navigazione principale"><button class="nav active" id="nav-live" onclick="UI.showPage('live')">LIVE</button><button class="nav" id="nav-setup" onclick="UI.showPage('setup')">SETUP</button><button class="nav" id="nav-log" onclick="UI.showPage('log')">LOG</button><button class="nav" id="nav-results" onclick="UI.showPage('results')">RISULTATI</button></div></div><div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const CFG={key:'setterScoutTouchMobileV8ScrollTop'};
+const Data={positions:['P1','P2','P3','P4','P5','P6'],phases:['RICEZIONE','BATTUTA','DIFESA','TRANSIZIONE'],inputs:[['IN#','perfetta','INSHARP'],['IN+','buona','INPLUS'],['IN!','staccata','INBANG'],['IN-','difficile','INMINUS'],['IN=','impossibile','INEQ']],dests:[['BANDA','DESTB'],['OPPOSTO','DESTO'],['CENTRALI','DESTC'],['8','DEST8'],['PIPE','DESTP'],['SECONDO TOCCO','DEST2']],outs:[['KILL','punto','KILL'],['CONT','continua','CONT'],['COP','coperta','COP'],['FREE','regalata','FREE'],['MUR','murata','MUR'],['ERR','errore','ERR']]};
+let state={setup:{team:'NOI',opp:'LORO',set:1,rally:1,note:'',autoReset:'yes',autoRally:'yes',vibration:'yes',predMin:4},setters:['8','12'],attackers:['B1','B2','O','C1','C2'],context:{setter:'',position:'P1',phase:'RICEZIONE'},current:{input:'',destination:'',attacker:'',outcome:''},log:[],nextId:1};
+const $=id=>document.getElementById(id);
+const Helpers={
+  pct:(n,d)=>d?Math.round(n/d*100)+'%':'0%',
+  eff:(k,e,m,t)=>t?Math.round((k-e-m)/t*100)+'%':'0%',
+  esc:x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),
+  coordLabel:(x,y)=>x!=null&&y!=null?`${Math.round(x)},${Math.round(y)}`:'—',
+  vibrate(ms=25){if(state.setup.vibration==='yes'&&navigator.vibrate)navigator.vibrate(ms)},
+  toast(msg,type=''){toast.textContent=msg;toast.className='toast '+type;toast.style.display='block';clearTimeout(window.__t);window.__t=setTimeout(()=>toast.style.display='none',1700)},
+  stat(){return{t:0,KILL:0,CONT:0,COP:0,FREE:0,MUR:0,ERR:0,d:{}}},
+  topDest(rows){const m={};rows.forEach(r=>m[r.destination]=(m[r.destination]||0)+1);const top=Object.entries(m).sort((a,b)=>b[1]-a[1])[0];return top?`${top[0]} ${Helpers.pct(top[1],rows.length)}`:'—'}
+};
+const Storage={
+  saveState(manual=false){localStorage.setItem(CFG.key,JSON.stringify(state));if(manual)Helpers.toast('Salvato','ok')},
+  auto(){Storage.saveState(false)},
+  loadState(manual=false){let raw=localStorage.getItem(CFG.key)||localStorage.getItem('setterScoutTouchMobileV4');if(!raw){if(manual)Helpers.toast('Nessun salvataggio');return false}try{const parsed=JSON.parse(raw);state=Storage.normalize(parsed);UI.renderAll();if(manual)Helpers.toast('Caricato','ok');return true}catch(e){Helpers.toast('Salvataggio non valido','err');return false}},
+  normalize(s){const base=JSON.parse(JSON.stringify(state));const merged={...base,...s,setup:{...base.setup,...(s.setup||{})},context:{...base.context,...(s.context||{})},current:{...base.current,...(s.current||{})}};merged.setters=Array.isArray(s.setters)?s.setters.filter(Boolean):base.setters;merged.attackers=Array.isArray(s.attackers)?s.attackers.filter(Boolean):base.attackers;merged.log=Array.isArray(s.log)?s.log:[];merged.nextId=Number(s.nextId)||((merged.log.length?Math.max(...merged.log.map(r=>Number(r.id)||0))+1:1));return merged},
+  importJSON(input){let f=input.files&&input.files[0];if(!f)return;let rd=new FileReader();rd.onload=e=>{try{const imported=JSON.parse(e.target.result);state=Storage.normalize(imported);Storage.auto();UI.renderAll();Helpers.toast('Import ok','ok')}catch(err){alert('JSON non valido')}};rd.readAsText(f);input.value=''}
+};
+const UI={
+  showPage(n){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$('page-'+n).classList.add('active');document.querySelectorAll('.nav').forEach(t=>t.classList.remove('active'));$('nav-'+n).classList.add('active');if(n==='results')Stats.calculate(true)},
+  sync(){teamName.value=state.setup.team;oppName.value=state.setup.opp;setNum.value=state.setup.set;rallyNum.value=state.setup.rally;matchNote.value=state.setup.note;autoReset.value=state.setup.autoReset;autoRally.value=state.setup.autoRally;vibration.value=state.setup.vibration;predMin.value=state.setup.predMin;setter1.value=state.setters[0]||'';setter2.value=state.setters[1]||'';for(let i=1;i<=5;i++)$('att'+i).value=state.attackers[i-1]||''},
+  pick(txt,cls,act,on,label){return `<button class="pick ${cls} ${act?'active':''}" onclick="${on}" aria-label="${Helpers.esc(label||txt)}">${Helpers.esc(txt)}</button>`},
+  touch(x,act,on,label){return `<button class="touch ${x[2]} ${act?'active':''}" onclick="${on}" aria-label="${Helpers.esc(label||x[0])}">${Helpers.esc(x[0])}<small>${Helpers.esc(x[1]||'')}</small></button>`},
+  scrollToBlock(id){const el=$(id);if(!el)return;setTimeout(()=>{el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.remove('scroll-target');void el.offsetWidth;el.classList.add('scroll-target')},80)},
+  scrollToLiveTop(){setTimeout(()=>{window.scrollTo({top:0,behavior:'smooth'});const el=$('page-live');if(el){el.classList.remove('scroll-target');void el.offsetWidth;el.classList.add('scroll-target')}},120)},
+
+
+  courtHTML(type){
+    const isInput=type==='input';
+    const x=isInput?state.current.inputX:state.current.destX;
+    const y=isInput?state.current.inputY:state.current.destY;
+    const value=isInput?state.current.input:state.current.destination;
+    const title=isInput?'Tocca il punto di arrivo della palla':'Tocca la zona in cui viene alzata';
+    const marker=(x!=null&&y!=null)?`<span class="court-marker" style="left:${x}%;top:${y}%"></span>`:'';
+    const legends=isInput
+      ? ['# = verde chiaro','+ = verde scuro','! = arancione chiaro','- = arancione scuro','= = rosso']
+      : ['Blu = BANDA','Giallo = OPPOSTO','Verde = CENTRALI','Rosso = 8','Rosa = PIPE'];
+
+    const inputSvg = `
+      <svg class="court-svg" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <filter id="shadowA" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#000" flood-opacity=".18"/></filter>
+        </defs>
+        <rect x="0" y="0" width="200" height="100" fill="#10bfd2"/>
+        <rect x="12" y="18" width="176" height="64" fill="#f39a62" stroke="#f1f1eb" stroke-width="1.6"/>
+        <rect x="16" y="22" width="44" height="56" rx="8" fill="#d40000"/>
+        <rect x="140" y="22" width="44" height="56" rx="8" fill="#d40000"/>
+        <circle cx="100" cy="50" r="36" fill="#b75e18" opacity=".75"/>
+        <circle cx="100" cy="50" r="28" fill="#d89e50" opacity=".92"/>
+        <circle cx="100" cy="50" r="19" fill="#3f7f14" opacity=".95"/>
+        <circle cx="100" cy="50" r="11" fill="#5fc44f"/>
+        <line x1="63" y1="18" x2="63" y2="82" stroke="#efefea" stroke-width="1" opacity=".55"/>
+        <line x1="137" y1="18" x2="137" y2="82" stroke="#efefea" stroke-width="1" opacity=".55"/>
+        <line x1="100" y1="5" x2="100" y2="95" stroke="#1b3650" stroke-width="1.1" opacity=".85"/>
+        <rect x="97.5" y="14" width="5" height="12" fill="#0d4a9a" opacity=".8" filter="url(#shadowA)"/>
+        <rect x="97.5" y="74" width="5" height="12" fill="#0d4a9a" opacity=".8" filter="url(#shadowA)"/>
+        <line x1="64" y1="8" x2="64" y2="18" stroke="#efefea" stroke-width=".8" stroke-dasharray="2 2"/>
+        <line x1="64" y1="82" x2="64" y2="92" stroke="#efefea" stroke-width=".8" stroke-dasharray="2 2"/>
+        <line x1="136" y1="8" x2="136" y2="18" stroke="#efefea" stroke-width=".8" stroke-dasharray="2 2"/>
+        <line x1="136" y1="82" x2="136" y2="92" stroke="#efefea" stroke-width=".8" stroke-dasharray="2 2"/>
+        <line x1="8" y1="18" x2="12" y2="18" stroke="#efefea" stroke-width="1"/>
+        <line x1="188" y1="18" x2="192" y2="18" stroke="#efefea" stroke-width="1"/>
+        <line x1="8" y1="82" x2="12" y2="82" stroke="#efefea" stroke-width="1"/>
+        <line x1="188" y1="82" x2="192" y2="82" stroke="#efefea" stroke-width="1"/>
+      </svg>`;
+
+    const destSvg = `
+      <svg class="court-svg" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true">
+        <rect x="0" y="0" width="200" height="100" fill="#10bfd2"/>
+        <rect x="12" y="18" width="176" height="64" fill="#f39a62" stroke="#f1f1eb" stroke-width="1.6"/>
+        <line x1="100" y1="5" x2="100" y2="95" stroke="#1b3650" stroke-width="1.1" opacity=".85"/>
+        <rect x="97.5" y="14" width="5" height="12" fill="#0d4a9a" opacity=".8"/>
+        <rect x="97.5" y="74" width="5" height="12" fill="#0d4a9a" opacity=".8"/>
+        <line x1="64" y1="8" x2="64" y2="18" stroke="#efefea" stroke-width=".8" stroke-dasharray="2 2"/>
+        <line x1="64" y1="82" x2="64" y2="92" stroke="#efefea" stroke-width=".8" stroke-dasharray="2 2"/>
+        <line x1="136" y1="8" x2="136" y2="18" stroke="#efefea" stroke-width=".8" stroke-dasharray="2 2"/>
+        <line x1="136" y1="82" x2="136" y2="92" stroke="#efefea" stroke-width=".8" stroke-dasharray="2 2"/>
+        <line x1="8" y1="18" x2="12" y2="18" stroke="#efefea" stroke-width="1"/>
+        <line x1="188" y1="18" x2="192" y2="18" stroke="#efefea" stroke-width="1"/>
+        <line x1="8" y1="82" x2="12" y2="82" stroke="#efefea" stroke-width="1"/>
+        <line x1="188" y1="82" x2="192" y2="82" stroke="#efefea" stroke-width="1"/>
+        <rect x="63" y="18" width="37" height="18" fill="#1838ff"/>
+        <rect x="100" y="18" width="37" height="18" fill="#ffe500"/>
+        <rect x="63" y="36" width="74" height="28" fill="#39ff00"/>
+        <rect x="63" y="64" width="37" height="18" fill="#ffe500"/>
+        <rect x="100" y="64" width="37" height="18" fill="#1838ff"/>
+        <rect x="18" y="41" width="46" height="18" fill="#f01ef3"/>
+        <rect x="18" y="64" width="46" height="18" fill="#f00000"/>
+        <rect x="140" y="18" width="46" height="18" fill="#f00000"/>
+        <rect x="140" y="41" width="46" height="18" fill="#f01ef3"/>
+        <text x="81.5" y="27" font-size="8" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">BANDA</text>
+        <text x="118.5" y="27" font-size="8" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">OPPOSTO</text>
+        <text x="100" y="50" font-size="9" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">CENTRALI</text>
+        <text x="81.5" y="73" font-size="8" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">OPPOSTO</text>
+        <text x="118.5" y="73" font-size="8" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">BANDA</text>
+        <text x="41" y="50" font-size="9" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">PIPE</text>
+        <text x="163" y="50" font-size="9" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">PIPE</text>
+        <text x="41" y="73" font-size="9" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">8</text>
+        <text x="163" y="27" font-size="9" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="#111">8</text>
+      </svg>`;
+
+    const extra = isInput ? '' : `<div class="row" style="margin-top:8px"><button class="btn" onclick="Actions.chooseSecondTouch()">SECONDO TOCCO</button></div>`;
+    return `<div class="court-panel"><div class="court-head"><span>${title}</span><span class="court-current">${Helpers.esc(value||'nessuna scelta')}</span></div><button type="button" class="court-touch ${isInput?'court-input':'court-dest'}" onclick="Actions.setCourtPoint(event,'${type}')" aria-label="${title}">${isInput?inputSvg:destSvg}${marker}<span class="court-hint">Tocca il campo: registra il punto e passa automaticamente allo step successivo.</span></button><div class="court-legend">${legends.map(l=>`<span>${Helpers.esc(l)}</span>`).join('')}</div>${extra}<div class="court-note">Coordinate salvate nel log e nel CSV: 0,0 è alto a sinistra; 100,100 è basso a destra.</div></div>`
+  },
+  renderAll(){UI.sync();ctxSetter.textContent=state.context.setter||'—';ctxPos.textContent=state.context.position;ctxPhase.textContent=state.context.phase;ctxRally.textContent=`${state.setup.set}/${state.setup.rally}`;setterBtns.innerHTML=state.setters.map(s=>UI.pick(s,'SET',state.context.setter===s,`Actions.setCtx('setter','${Helpers.esc(s)}')`,'Palleggiatore '+s)).join('');posBtns.innerHTML=Data.positions.map(p=>UI.pick(p,'POS',state.context.position===p,`Actions.setCtx('position','${p}')`,'Posizione '+p)).join('');phaseBtns.innerHTML=Data.phases.map(p=>UI.pick(p,'PHASE',state.context.phase===p,`Actions.setCtx('phase','${p}')`,p)).join('');inputBtns.innerHTML=UI.courtHTML('input');destBtns.innerHTML=UI.courtHTML('dest');attBtns.innerHTML=state.attackers.map(a=>UI.touch([a,'','DESTB'],state.current.attacker===a,`Actions.setCur('attacker','${Helpers.esc(a)}')`,'Attaccante '+a)).join('')+UI.touch(['—','no att.','DEST2'],state.current.attacker==='—',`Actions.setCur('attacker','—')`,'Nessun attaccante');outBtns.innerHTML=Data.outs.map(x=>UI.touch(x,state.current.outcome===x[0],`Actions.saveOutcome('${x[0]}')`,'Esito '+x[0])).join('');const complete=!!(state.context.setter&&state.current.input&&state.current.destination&&(state.current.attacker||state.current.destination==='SECONDO TOCCO'));currentLine.classList.toggle('complete',complete);currentLine.innerHTML=[state.context.setter||'<span class="missing">PAL?</span>',state.context.position,state.context.phase,state.current.input||'<span class="missing">IN?</span>',state.current.destination||'<span class="missing">DEST?</span>',state.current.attacker||'<span class="missing">ATT?</span>',state.current.outcome||'<span class="missing">ESITO?</span>'].join(' → ');blockInput.classList.toggle('complete',!!state.current.input);blockDest.classList.toggle('complete',!!state.current.destination&&(!!state.current.attacker||state.current.destination==='SECONDO TOCCO'));blockOutcome.classList.toggle('complete',false);UI.renderLast();UI.renderLog();Stats.calculate(false)},
+  renderLast(){const r=state.log[state.log.length-1];if(!r){lastActionLine.textContent='Nessuna azione registrata.';return}lastActionLine.textContent=`#${r.id} · Set ${r.set}/${r.rally} · ${r.setter} ${r.position} ${r.phase} · ${r.input} → ${r.destination} → ${r.attacker||'—'} → ${r.outcome}`},
+  renderLog(){logBody.innerHTML=state.log.slice().reverse().map(r=>`<tr><td>${r.id}</td><td><button class="editbtn" onclick="Actions.openEdit(${r.id})">Edit</button></td><td>${Helpers.esc(r.set)}</td><td>${Helpers.esc(r.rally)}</td><td>${Helpers.esc(r.setter)}</td><td>${Helpers.esc(r.position)}</td><td>${Helpers.esc(r.phase)}</td><td>${Helpers.esc(r.input)}</td><td>${Helpers.esc(Helpers.coordLabel(r.inputX,r.inputY))}</td><td>${Helpers.esc(r.destination)}</td><td>${Helpers.esc(Helpers.coordLabel(r.destX,r.destY))}</td><td>${Helpers.esc(r.attacker)}</td><td>${Helpers.esc(r.outcome)}</td></tr>`).join('')},
+  fillSelect(id,values,selected){const el=$(id);el.innerHTML=values.map(v=>`<option value="${Helpers.esc(v)}" ${v===selected?'selected':''}>${Helpers.esc(v)}</option>`).join('')},
+  closeEdit(){$('editModal').classList.remove('active')},
+  closeOutcome(){$('outcomeModal').classList.remove('active')},
+  bar(label,value,total,kind=''){return `<div class="barrow"><span>${Helpers.esc(label)}</span><div class="bar ${kind}"><span style="width:${total?Math.round(value/total*100):0}%"></span></div><span>${Helpers.pct(value,total)}</span></div>`}
+};
+const Actions={
+
+
+  setCourtPoint(ev,type){
+    const rect=ev.currentTarget.getBoundingClientRect();
+    const x=Math.max(0,Math.min(100,((ev.clientX-rect.left)/rect.width)*100));
+    const y=Math.max(0,Math.min(100,((ev.clientY-rect.top)/rect.height)*100));
+    if(type==='input'){
+      state.current.input=Actions.mapInputPoint(x,y);
+      state.current.inputX=Math.round(x);state.current.inputY=Math.round(y);
+      Storage.auto();UI.renderAll();Helpers.vibrate(20);UI.scrollToBlock('blockDest');
+      return;
+    }
+    state.current.destination=Actions.mapDestPoint(x,y);
+    state.current.destX=Math.round(x);state.current.destY=Math.round(y);
+    if(state.current.destination==='SECONDO TOCCO')state.current.attacker='—';
+    Storage.auto();UI.renderAll();Helpers.vibrate(20);
+    UI.scrollToBlock(state.current.destination==='SECONDO TOCCO'?'blockOutcome':'blockAtt');
+  },
+  mapInputPoint(x,y){
+    const dx=x-50,dy=y-50,dist=Math.sqrt(dx*dx+dy*dy);
+    if(x<26||x>74)return 'IN=';
+    if(dist<=11)return 'IN#';
+    if(dist<=21)return 'IN+';
+    if(dist<=31)return 'IN!';
+    return 'IN-';
+  },
+  mapDestPoint(x,y){
+    if(x>=30&&x<50&&y>=0&&y<28)return 'BANDA';
+    if(x>=50&&x<70&&y>=0&&y<28)return 'OPPOSTO';
+    if(x>=30&&x<70&&y>=28&&y<65)return 'CENTRALI';
+    if(x>=30&&x<50&&y>=65&&y<=100)return 'OPPOSTO';
+    if(x>=50&&x<70&&y>=65&&y<=100)return 'BANDA';
+    if(x<30&&y>=34&&y<60)return 'PIPE';
+    if(x<30&&y>=60)return '8';
+    if(x>=70&&y<34)return '8';
+    if(x>=70&&y>=34&&y<60)return 'PIPE';
+    return 'CENTRALI';
+  },
+  chooseSecondTouch(){
+    state.current.destination='SECONDO TOCCO';
+    state.current.attacker='—';
+    delete state.current.destX;delete state.current.destY;
+    Storage.auto();UI.renderAll();UI.scrollToBlock('blockOutcome');
+  },
+  applySetup(){state.setup.team=teamName.value||'NOI';state.setup.opp=oppName.value||'LORO';state.setup.set=+setNum.value||1;state.setup.rally=+rallyNum.value||1;state.setup.note=matchNote.value||'';state.setup.autoReset=autoReset.value;state.setup.autoRally=autoRally.value;state.setup.vibration=vibration.value;state.setup.predMin=+predMin.value||4;state.setters=[setter1.value,setter2.value].filter(Boolean);state.attackers=['att1','att2','att3','att4','att5'].map(id=>$(id).value).filter(Boolean);if(!state.setters.includes(state.context.setter))state.context.setter=state.setters[0]||'';Storage.auto();UI.renderAll()},
+  setCtx(f,v){state.context[f]=v;Storage.auto();UI.renderAll()},
+  setCur(f,v){state.current[f]=v;if(f==='input'){delete state.current.inputX;delete state.current.inputY}if(f==='destination'){delete state.current.destX;delete state.current.destY}if(f==='destination'&&v==='SECONDO TOCCO'&&!state.current.attacker)state.current.attacker='—';Storage.auto();UI.renderAll();if(f==='input')UI.scrollToBlock('blockDest');if(f==='attacker')UI.scrollToBlock('blockOutcome')},
+  validateCurrent(){if(!state.context.setter)return 'Manca il palleggiatore';if(!state.current.input)return 'Manca IN';if(!state.current.destination)return 'Manca DEST';if(!state.current.attacker&&state.current.destination!=='SECONDO TOCCO')return 'Manca ATTACCANTE';return ''},
+  saveOutcome(o){state.current.outcome=o;const err=Actions.validateCurrent();if(err){Helpers.toast(err,'err');UI.renderAll();return}let a={id:state.nextId++,set:state.setup.set,rally:state.setup.rally,team:state.setup.team,setter:state.context.setter,position:state.context.position,phase:state.context.phase,input:state.current.input,inputX:state.current.inputX,inputY:state.current.inputY,destination:state.current.destination,destX:state.current.destX,destY:state.current.destY,attacker:state.current.attacker||'',outcome:o,ts:new Date().toISOString()};state.log.push(a);if(state.setup.autoRally==='yes')state.setup.rally++;if(state.setup.autoReset==='yes')state.current={input:'',destination:'',attacker:'',outcome:''};Storage.auto();Helpers.vibrate(35);Helpers.toast(`Azione #${a.id} salvata: ${a.input} → ${a.destination} → ${a.outcome}`,'ok');UI.renderAll();UI.scrollToLiveTop()},
+  clearCurrent(){state.current={input:'',destination:'',attacker:'',outcome:''};Storage.auto();UI.renderAll()},
+  nextRally(){state.setup.rally++;Storage.auto();UI.renderAll()},
+  undo(){let x=state.log.pop();if(x){state.nextId=state.log.length?Math.max(...state.log.map(r=>r.id))+1:1;Storage.auto();Helpers.toast('Annullata #'+x.id);Helpers.vibrate(15)}UI.renderAll()},
+  repeatLastContext(){const r=state.log[state.log.length-1];if(!r)return Helpers.toast('Nessuna azione da ripetere');state.context={setter:r.setter,position:r.position,phase:r.phase};state.current={input:r.input,inputX:r.inputX,inputY:r.inputY,destination:r.destination,destX:r.destX,destY:r.destY,attacker:r.attacker,outcome:''};Storage.auto();UI.renderAll();UI.scrollToBlock('blockOutcome')},
+  editLast(){const r=state.log[state.log.length-1];if(!r)return Helpers.toast('Nessuna azione da modificare');Actions.openEdit(r.id)},
+  quickOutcomeLast(){const r=state.log[state.log.length-1];if(!r)return Helpers.toast('Nessuna azione da correggere');quickOutcomeBtns.innerHTML=Data.outs.map(x=>UI.touch(x,false,`Actions.setLastOutcome('${x[0]}')`,'Cambia esito in '+x[0])).join('');$('outcomeModal').classList.add('active')},
+  setLastOutcome(o){const r=state.log[state.log.length-1];if(!r)return;r.outcome=o;Storage.auto();UI.closeOutcome();UI.renderAll();Helpers.toast('Esito aggiornato: '+o,'ok')},
+  openEdit(id){const r=state.log.find(x=>x.id===id);if(!r)return Helpers.toast('Riga non trovata','err');editId.value=id;UI.fillSelect('editSetter',state.setters,r.setter);UI.fillSelect('editPosition',Data.positions,r.position);UI.fillSelect('editPhase',Data.phases,r.phase);UI.fillSelect('editInput',Data.inputs.map(x=>x[0]),r.input);UI.fillSelect('editDestination',Data.dests.map(x=>x[0]),r.destination);UI.fillSelect('editAttacker',[...state.attackers,'—',''],r.attacker||'');UI.fillSelect('editOutcome',Data.outs.map(x=>x[0]),r.outcome);$('editModal').classList.add('active')},
+  saveEdit(){const id=Number(editId.value);const r=state.log.find(x=>x.id===id);if(!r)return Helpers.toast('Riga non trovata','err');Object.assign(r,{setter:editSetter.value,position:editPosition.value,phase:editPhase.value,input:editInput.value,destination:editDestination.value,attacker:editAttacker.value,outcome:editOutcome.value,editedAt:new Date().toISOString()});Storage.auto();UI.closeEdit();UI.renderAll();Helpers.toast('Riga modificata','ok')},
+  resetAll(){if(confirm('Resettare tutto?')){localStorage.removeItem(CFG.key);localStorage.removeItem('setterScoutTouchMobileV4');location.reload()}}
+};
+const Stats={
+  calculate(force=false){const log=state.log,total=log.length,k=log.filter(r=>r.outcome==='KILL').length,e=log.filter(r=>r.outcome==='ERR').length,m=log.filter(r=>r.outcome==='MUR').length,inp=log.filter(r=>r.input==='IN#'||r.input==='IN+').length;mTotal.textContent=total;mInPos.textContent=Helpers.pct(inp,total);mKill.textContent=Helpers.pct(k,total);mEff.textContent=Helpers.eff(k,e,m,total);mErr.textContent=e;miniCount.textContent=total;miniEff.textContent=Helpers.eff(k,e,m,total);Stats.dest();Stats.setter();Stats.attacker();Stats.input();Stats.predict();Stats.graphs()},
+  dest(){const map={};state.log.forEach(r=>{map[r.destination]??=Helpers.stat();let s=map[r.destination];s.t++;s[r.outcome]++});destStats.innerHTML=Object.keys(map).sort((a,b)=>map[b].t-map[a].t).map(d=>{let s=map[d];return `<tr><td>${Helpers.esc(d)}</td><td class="numcell">${s.t}</td><td>${Helpers.pct(s.t,state.log.length)}</td><td>${s.KILL}</td><td>${s.ERR}</td><td>${s.MUR}</td><td>${Helpers.eff(s.KILL,s.ERR,s.MUR,s.t)}</td></tr>`}).join('')},
+  setter(){const map={};state.log.forEach(r=>{map[r.setter]??=[];map[r.setter].push(r)});setterStats.innerHTML=Object.keys(map).map(p=>{const rows=map[p],t=rows.length,k=rows.filter(r=>r.outcome==='KILL').length,e=rows.filter(r=>r.outcome==='ERR').length,m=rows.filter(r=>r.outcome==='MUR').length,inp=rows.filter(r=>r.input==='IN#'||r.input==='IN+').length;return `<tr><td>${Helpers.esc(p)}</td><td>${t}</td><td>${Helpers.pct(inp,t)}</td><td>${Helpers.pct(k,t)}</td><td>${Helpers.eff(k,e,m,t)}</td><td>${Helpers.esc(Helpers.topDest(rows))}</td></tr>`}).join('')},
+  attacker(){const map={};state.log.forEach(r=>{const a=r.attacker||'—';map[a]??=Helpers.stat();let s=map[a];s.t++;s[r.outcome]++});attStats.innerHTML=Object.keys(map).sort((a,b)=>map[b].t-map[a].t).map(a=>{let s=map[a];return `<tr><td>${Helpers.esc(a)}</td><td>${s.t}</td><td>${s.KILL}</td><td>${s.ERR}</td><td>${s.MUR}</td><td>${Helpers.eff(s.KILL,s.ERR,s.MUR,s.t)}</td></tr>`}).join('')},
+  input(){const map={};state.log.forEach(r=>{map[r.input]??=[];map[r.input].push(r)});inputStats.innerHTML=Data.inputs.map(x=>x[0]).filter(i=>map[i]).map(i=>{const rows=map[i],t=rows.length,k=rows.filter(r=>r.outcome==='KILL').length,e=rows.filter(r=>r.outcome==='ERR').length,m=rows.filter(r=>r.outcome==='MUR').length;return `<tr><td>${i}</td><td>${t}</td><td>${Helpers.esc(Helpers.topDest(rows))}</td><td>${Helpers.pct(k,t)}</td><td>${Helpers.eff(k,e,m,t)}</td></tr>`}).join('')},
+  predict(){let map={};state.log.forEach(r=>{let key=`${r.setter}|${r.position}|${r.phase}|${r.input}`;map[key]??={setter:r.setter,position:r.position,phase:r.phase,input:r.input,t:0,d:{}};map[key].t++;map[key].d[r.destination]=(map[key].d[r.destination]||0)+1});const min=+state.setup.predMin||4;let rows=Object.values(map).filter(s=>s.t>=min).map(s=>{let top=Object.entries(s.d).sort((a,b)=>b[1]-a[1])[0],ratio=top?top[1]/s.t:0,val=ratio>=.65?'PREVEDIBILE':ratio>=.5?'ATTENZIONE':'VARIA';return{s,top,ratio,val}}).sort((a,b)=>b.ratio-a.ratio||b.s.t-a.s.t);predictStats.innerHTML=rows.map(x=>`<tr><td>${Helpers.esc(`${x.s.setter} ${x.s.position} ${x.s.phase} ${x.s.input}`)}</td><td>${x.s.t}</td><td>${Helpers.esc(x.top?x.top[0]:'—')}</td><td>${Helpers.pct(x.top?x.top[1]:0,x.s.t)}</td><td class="${x.val==='PREVEDIBILE'?'dangerText':x.val==='ATTENZIONE'?'okText':''}">${x.val}</td></tr>`).join('');let ck=`${state.context.setter}|${state.context.position}|${state.context.phase}|${state.current.input}`,cur=map[ck];if(cur&&cur.t>=min){let top=Object.entries(cur.d).sort((a,b)=>b[1]-a[1])[0];miniTop.textContent=`${top[0]} ${Helpers.pct(top[1],cur.t)}`;if(top[1]/cur.t>=.6){miniAlert.style.display='block';miniAlert.textContent=`Vai spesso su ${top[0]} (${Helpers.pct(top[1],cur.t)}) in questa situazione.`}else miniAlert.style.display='none'}else{miniTop.textContent='—';miniAlert.style.display='none'}},
+  graphs(){const total=state.log.length;const destMap={},outMap={},rotMap={};state.log.forEach(r=>{destMap[r.destination]=(destMap[r.destination]||0)+1;outMap[r.outcome]=(outMap[r.outcome]||0)+1;rotMap[r.position]=(rotMap[r.position]||0)+1});destBars.innerHTML=Object.entries(destMap).sort((a,b)=>b[1]-a[1]).map(([l,v])=>UI.bar(l,v,total)).join('')||'<p class="hint">Nessun dato.</p>';outBars.innerHTML=Data.outs.map(o=>[o[0],outMap[o[0]]||0]).filter(x=>x[1]).map(([l,v])=>UI.bar(l,v,total,l==='ERR'||l==='MUR'?'err':l==='KILL'?'ok':'')).join('')||'<p class="hint">Nessun dato.</p>';const max=Math.max(1,...Object.values(rotMap));rotHeat.innerHTML=Data.positions.map(p=>{const v=rotMap[p]||0,ratio=v/max;return `<div class="heatcell ${ratio>.7?'danger':ratio>.4?'hot':''}"><strong>${p}</strong><span>${v} az.</span></div>`}).join('')}
+};
+const Export={
+  download(blob,name){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)},
+  json(){Export.download(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),Export.fileName('json'))},
+  csv(){let rows=[['ID','SET','RALLY','TEAM','SETTER','POSITION','PHASE','INPUT','INPUT_X','INPUT_Y','DESTINATION','DEST_X','DEST_Y','ATTACKER','OUTCOME','TS'],...state.log.map(r=>[r.id,r.set,r.rally,r.team,r.setter,r.position,r.phase,r.input,r.inputX??'',r.inputY??'',r.destination,r.destX??'',r.destY??'',r.attacker,r.outcome,r.ts||''])];let csv=rows.map(row=>row.map(x=>`"${String(x??'').replace(/"/g,'""')}"`).join(',')).join('\n');Export.download(new Blob([csv],{type:'text/csv;charset=utf-8'}),Export.fileName('csv'))},
+  fileName(ext){const clean=s=>String(s||'').replace(/[^a-z0-9_-]+/gi,'_').replace(/^_+|_+$/g,'')||'team';return `${clean(state.setup.team)}_vs_${clean(state.setup.opp)}_set${state.setup.set}_setter_scout.${ext}`},
+  table(headers,rows){return `<table><thead><tr>${headers.map(h=>`<th>${Helpers.esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${Helpers.esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`},
+  report(){Stats.calculate(true);const r=Export.reportData();const date=new Date().toLocaleString('it-IT');const meta=`${state.setup.team} vs ${state.setup.opp} · Set ${state.setup.set} · Azioni ${state.log.length} · ${date}`;const insights=Export.insights(r);const html=`<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Setter Scout Touch - Report</title><style>body{font-family:Arial,Helvetica,sans-serif;margin:18px;color:#111}h1{font-size:23px;margin:0 0 4px}.meta{font-size:12px;color:#555;margin-bottom:12px}.brand{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.pill{border-radius:999px;background:#1f6feb;color:#fff;padding:6px 10px;font-weight:900;font-size:11px}.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0 16px}.metric{border:1px solid #ddd;border-radius:10px;padding:8px}.num{font-size:22px;font-weight:900}.lbl{font-size:10px;color:#555;font-weight:700}h2{font-size:16px;margin:18px 0 8px}table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:12px}th,td{border:1px solid #ddd;padding:5px;text-align:left}th{background:#f2f4f8}.actions{display:flex;gap:8px;margin:12px 0 18px}button{border:1px solid #ccc;background:#fff;border-radius:10px;padding:10px 12px;font-weight:800}.primary{background:#1f6feb;color:#fff;border-color:#1f6feb}.insight{border:1px solid #ddd;border-radius:10px;padding:8px;margin:6px 0;background:#fafafa}.warn{background:#fff8df;border-color:#f2b400}.bad{background:#ffe8e8;border-color:#d90000}
+/* Campo touch stilizzato V6 */
+.court-panel{background:#f8fbff;border:1px solid var(--line);border-radius:16px;padding:10px;margin-top:4px;grid-column:1 / -1;width:100%;max-width:100%}
+.court-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px;font-size:12px;font-weight:900;color:var(--muted)}
+.court-current{color:var(--text);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.court-touch{position:relative;display:block;width:100%;height:auto;aspect-ratio:2 / 1;min-height:180px;max-height:none;border:0;border-radius:18px;padding:0;overflow:hidden;background:#dff5e8;box-shadow:inset 0 0 0 4px #fff,0 2px 8px #0001;touch-action:manipulation;color:inherit}
+.court-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.court-svg .outer{fill:#dff5e8;stroke:#172033;stroke-width:3}
+.court-svg .zone{fill:rgba(255,255,255,.22);stroke:#172033;stroke-width:1.2;stroke-dasharray:5 4}
+.court-svg .line{stroke:#172033;stroke-width:2;opacity:.65}
+.court-svg .net{stroke:#172033;stroke-width:5;opacity:.85}
+.court-svg .attack{stroke:#172033;stroke-width:2;opacity:.42;stroke-dasharray:9 5}
+.court-svg text{font-size:4px;font-weight:900;fill:#172033;opacity:.82;text-anchor:middle;dominant-baseline:middle}
+.court-svg .smalltxt{font-size:3.2px;opacity:.65}
+.court-hint{position:absolute;left:10px;right:10px;bottom:10px;background:rgba(255,255,255,.90);border:1px solid var(--line);border-radius:13px;padding:7px;text-align:center;font-size:11px;color:var(--muted);font-weight:900;pointer-events:none}
+.court-marker{position:absolute;width:22px;height:22px;border-radius:999px;background:#111827;border:3px solid #fff;box-shadow:0 2px 10px #0006;transform:translate(-50%,-50%);pointer-events:none;z-index:2}.court-marker:after{content:"";position:absolute;inset:-8px;border:2px solid #11182766;border-radius:999px}
+.court-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px}.court-legend span{border:1px solid var(--line);border-radius:9px;background:#fff;padding:6px 4px;text-align:center;font-size:10px;font-weight:900;color:var(--muted)}
+.court-note{font-size:11px;color:var(--muted);font-weight:900;margin-top:7px;line-height:1.3}
+@media(max-width:460px){.court-touch{aspect-ratio:1.95 / 1;min-height:150px;height:auto;max-height:none}.court-legend{grid-template-columns:repeat(2,1fr)}}
+
+@media print{.actions{display:none}body{margin:10mm}.pill{print-color-adjust:exact;-webkit-print-color-adjust:exact}}</style></head><body><div class="brand"><div><h1>Setter Scout Touch - Report risultati</h1><div class="meta">${Helpers.esc(meta)}</div><div class="meta">Note: ${Helpers.esc(state.setup.note||'—')}</div></div><div class="pill">Mobile V6 Campo</div></div><div class="actions"><button class="primary" onclick="window.print()">Stampa / Salva PDF</button><button onclick="window.close()">Chiudi</button></div><div class="metrics"><div class="metric"><div class="num">${r.total}</div><div class="lbl">Alzate</div></div><div class="metric"><div class="num">${r.inPosPct}</div><div class="lbl">IN buoni</div></div><div class="metric"><div class="num">${r.killPct}</div><div class="lbl">Kill %</div></div><div class="metric"><div class="num">${r.eff}</div><div class="lbl">Efficienza</div></div><div class="metric"><div class="num">${r.err}</div><div class="lbl">Errori</div></div></div><h2>Insight automatici</h2>${insights}<h2>Distribuzione per destinazione</h2>${Export.table(['Dest.','Tot','%','KILL','ERR','MUR','Eff.'],r.destRows)}<h2>Palleggiatori</h2>${Export.table(['Pal','Tot','IN+','Kill','Eff','Top dest'],r.setterRows)}<h2>Attaccanti</h2>${Export.table(['Att','Tot','Kill','Err','Mur','Eff'],r.attRows)}<h2>Qualità IN</h2>${Export.table(['IN','Tot','Top dest','Kill','Eff'],r.inputRows)}<h2>Prevedibilità</h2>${Export.table(['Situazione','Tot','Top','%','Valutazione'],r.predRows)}<h2>Log azioni</h2>${Export.table(['ID','Set','Rally','Pal','Pos','Fase','IN','IN XY','Dest','DEST XY','Att','Esito'],r.logRows)}</body></html>`;const blob=new Blob([html],{type:'text/html;charset=utf-8'});const url=URL.createObjectURL(blob);const w=window.open(url,'_blank');if(!w){Export.download(blob,Export.fileName('html'));Helpers.toast('Report scaricato: aprilo e salva/stampa in PDF')}else setTimeout(()=>URL.revokeObjectURL(url),10000)},
+  reportData(){const total=state.log.length,kill=state.log.filter(r=>r.outcome==='KILL').length,err=state.log.filter(r=>r.outcome==='ERR').length,mur=state.log.filter(r=>r.outcome==='MUR').length,inPos=state.log.filter(r=>r.input==='IN#'||r.input==='IN+').length;const rowsFromTable=tbody=>Array.from(tbody.querySelectorAll('tr')).map(tr=>Array.from(tr.children).map(td=>td.textContent));return{total,kill,err,mur,inPos,eff:Helpers.eff(kill,err,mur,total),inPosPct:Helpers.pct(inPos,total),killPct:Helpers.pct(kill,total),destRows:rowsFromTable(destStats),setterRows:rowsFromTable(setterStats),attRows:rowsFromTable(attStats),inputRows:rowsFromTable(inputStats),predRows:rowsFromTable(predictStats),logRows:state.log.map(r=>[r.id,r.set,r.rally,r.setter,r.position,r.phase,r.input,Helpers.coordLabel(r.inputX,r.inputY),r.destination,Helpers.coordLabel(r.destX,r.destY),r.attacker||'',r.outcome])}},
+  insights(r){const items=[];if(!r.total)items.push(['warn','Nessun dato registrato.']);if(r.predRows[0]&&r.predRows[0][4]==='PREVEDIBILE')items.push(['bad',`Situazione più prevedibile: ${r.predRows[0][0]} → ${r.predRows[0][2]} (${r.predRows[0][3]}).`]);if(r.destRows[0])items.push(['',`Destinazione più usata: ${r.destRows[0][0]} (${r.destRows[0][2]}).`]);if(r.attRows[0])items.push(['',`Attaccante più servito: ${r.attRows[0][0]} con ${r.attRows[0][1]} palloni.`]);if(r.inPosPct==='0%'&&r.total)items.push(['warn','Nessuna palla IN# o IN+ registrata. Controlla se i dati sono corretti.']);return items.map(([cls,txt])=>`<div class="insight ${cls}">${Helpers.esc(txt)}</div>`).join('')}
+};
+function init(){Storage.loadState(false);if(!state.context.setter)state.context.setter=state.setters[0]||'';UI.renderAll();document.addEventListener('keydown',e=>{if(e.key==='Escape'){UI.closeEdit();UI.closeOutcome()}})}
+init();
+</script>
+</body></html>
