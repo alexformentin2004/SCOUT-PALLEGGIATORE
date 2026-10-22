@@ -1,4 +1,4 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#101b31"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Scout Palleggio"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><title>Scout Palleggiatore</title><style>
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#f2f7fd"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Scout Palleggio"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><title>Scout Palleggiatore</title><style>
 :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#eef5ff;background:#0b1220}*{box-sizing:border-box}body{margin:0;min-height:100dvh}button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.35;cursor:default}.app{max-width:600px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 15px calc(35px + env(safe-area-inset-bottom))}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.brand{font-size:12px;letter-spacing:.14em;color:#91a7ca;font-weight:800}.title{font-size:27px;font-weight:850;margin:4px 0}.muted{color:#a2b2cf;font-size:13px}.pill{background:#153c39;color:#7ef0c2;border-radius:40px;padding:7px 10px;font-size:12px;font-weight:750}.panel{background:#16233a;border:1px solid #293d5c;border-radius:19px;padding:16px;margin:12px 0}.panel h3{margin:0 0 12px;font-size:17px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.btn{border:1px solid #415777;border-radius:13px;background:#253651;color:#fff;padding:13px 10px;min-height:49px;font-weight:750}.btn.primary{background:#4277f3;border-color:#6796ff}.btn.good{background:#146958;border-color:#289c83}.btn.bad{background:#81364b;border-color:#b8566f}.btn.selected{background:#3565bc;border-color:#9ec4ff}.btn.ghost{background:transparent}.btn.large{min-height:115px;font-size:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}.btn.large span{font-size:27px}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.stack{display:grid;gap:10px}.sectionlabel{font-weight:750;margin:16px 0 10px}.score{font-size:34px;font-weight:850;text-align:center}.scorectl{display:flex;justify-content:center;gap:9px;margin-top:7px}.scorectl button{min-width:44px}.tiny{font-size:12px}.court{width:100%;max-width:440px;display:block;margin:10px auto;border-radius:10px;background:#17253d;touch-action:none;user-select:none}.tip{padding:10px 12px;background:#1c3552;border-radius:10px;font-size:13px;color:#cfe0fa}.footer{margin-top:24px}.stat{padding:13px;background:#1c2d47;border-radius:12px}.stat strong{display:block;font-size:23px}.stat small{color:#a2b2cf}.bar{height:10px;background:#2c3d57;border-radius:20px;overflow:hidden}.bar>div{height:100%;background:#5c94fa}.tabs{display:flex;gap:5px;overflow-x:auto;margin:10px 0}.tabs button{white-space:nowrap;padding:10px 12px}.item{padding:12px;border:1px solid #334863;border-radius:12px;margin:8px 0}.hidden{display:none!important}.warning{color:#ffbdc4}.goodtext{color:#8de9b5}label{display:block;font-size:13px;color:#bfd0ea;margin-bottom:5px}input[type=text],input[type=date],select{width:100%;padding:13px;background:#0c182a;color:#fff;border:1px solid #4b6280;border-radius:11px}input[type=checkbox]{width:19px;height:19px;vertical-align:middle}table{border-collapse:collapse;width:100%;font-size:12px}td,th{padding:9px 5px;border-bottom:1px solid #344760;text-align:left}th{color:#abc1e0}svg text{font-family:system-ui}.spaced{margin-top:12px}.scroll{overflow:auto}.chartrow{margin:10px 0}.chartrow .row{font-size:13px;margin-bottom:4px}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#d9f9ed;color:#10352d;border-radius:10px;padding:10px 16px;font-weight:700;z-index:9;box-shadow:0 4px 20px #0007;display:none;max-width:90vw}.subtle{font-size:12px;color:#9fb1cc}hr{border:0;border-top:1px solid #30445e;margin:15px 0}@media print{body{background:#fff;color:#111}.app{max-width:none;padding:0}.noprint{display:none!important}.panel,.stat{background:white;color:black;border:1px solid #ccc;break-inside:avoid}.muted,.subtle{color:#444}.bar{background:#ddd}.bar>div{background:#555}.chartrow{break-inside:avoid}svg{max-height:340px}}
 </style><style>
 /* Pulsanti ad alto contrasto: riconoscibili anche con uno sguardo periferico */
@@ -23,5 +23,41 @@
 .grid3 .btn{font-size:13px;padding:12px 4px;min-height:72px;overflow-wrap:anywhere}
 .grid2 .btn{min-height:70px}
 .btn.ghost{min-height:48px}
+</style>
+<style>
+/* Tema chiaro per scouting live: tasti grandi, tinte chiare e testo scuro */
+:root{color:#172b45;background:#f2f7fd;color-scheme:light}
+body{background:#f2f7fd;color:#172b45}
+.brand{color:#486887}.muted,.subtle{color:#536b84}
+.panel{background:#fff;border-color:#d8e5f3;box-shadow:0 3px 14px #18365b0b}
+.pill{background:#d6f6e7;color:#116744}
+.btn{background:#e0ecfb;color:#183a61;border-color:#abc7eb;box-shadow:inset 0 -3px 0 #203d5a12}
+.btn.primary{background:#a9caff;color:#103568;border-color:#6d9fef}
+.btn.bad{background:#ffd8df;color:#8c2135;border-color:#f4a5b4}
+.btn.selected{background:#a6c5fa;color:#133a75;border-color:#5688df}
+.btn.ghost{background:#fff;color:#3d5874;border-color:#cbdbea}
+.btn.grade-perfect{background:#a9ebbf;border-color:#48b77b;color:#104d2b}
+.btn.grade-positive{background:#c5f2d4;border-color:#67c58e;color:#145a37}
+.btn.grade-low{background:#ffe6a2;border-color:#dfb23b;color:#694a00}
+.btn.grade-short{background:#ffd1a9;border-color:#ed9c54;color:#753709}
+.btn.grade-long{background:#e0cafa;border-color:#ad84df;color:#532985}
+.btn.grade-negative{background:#ffdaaa;border-color:#d5a053;color:#6d420e}
+.btn.grade-error{background:#ffbfc8;border-color:#e77b8a;color:#832338}
+.btn.grade-easy{background:#d7e5f4;border-color:#9dbbda;color:#2a517a}
+.btn.grade-neutral{background:#c6dfff;border-color:#7aafea;color:#214d83}
+.btn.grade-touch{background:#b6ecf2;border-color:#65bdcb;color:#146474}
+.btn.type-banda{background:#b6d5ff;border-color:#6ca4e9;color:#194d8d}
+.btn.type-centrale{background:#dfccfa;border-color:#ad87e3;color:#542d88}
+.btn.type-opposto{background:#ffd7b3;border-color:#efa56b;color:#814211}
+.btn.setter-attack{background:#b6f1e5;border-color:#60bba9;color:#125e54}
+.tip{background:#dfeeff;color:#274c78}
+.stat{background:#edf4fd}.stat small{color:#536b84}
+.bar{background:#e2ebf6}.bar>div{background:#76a8ed}
+label{color:#3b5879}
+input[type=text],input[type=date],select{background:#fff;color:#193754;border-color:#a7bdd8}
+.item{border-color:#c8d9ed}hr{border-top-color:#dbe6f2}
+.court{background:#e1ecfa}
+.toast{box-shadow:0 4px 20px #1a355233}
+@media print{body{background:white}}
 </style>
 </head><body><main class="app" id="app"></main><div class="toast" id="toast"></div><script src="app.js" defer></script></body></html>
