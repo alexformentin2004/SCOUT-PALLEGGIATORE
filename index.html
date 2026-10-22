@@ -60,4 +60,49 @@ input[type=text],input[type=date],select{background:#fff;color:#193754;border-co
 .toast{box-shadow:0 4px 20px #1a355233}
 @media print{body{background:white}}
 </style>
+<style>
+/* Palette uniforme applicata a Home, tutti i fondamentali, statistiche, archivio e impostazioni */
+:root{--ink:#193650;--surface:#fff;--canvas:#f5f9ff;--line:#d4e4f3;--muted:#58708a}
+html,body,.app{background:var(--canvas);color:var(--ink)}
+.panel,.stat,.item{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.sectionlabel,.title,.score,.panel h3,.row strong{color:var(--ink)}
+.brand,.muted,.subtle,.stat small{color:var(--muted)}
+/* Ogni fondamentale mantiene un colore identificativo ovunque */
+.btn.fundamental-alzata{background:#c8dcff;border-color:#8baef0;color:#183e7b}
+.btn.fundamental-difesa{background:#c9f1df;border-color:#86d1ad;color:#155d44}
+.btn.fundamental-muro{background:#e5d6fb;border-color:#bca0e9;color:#5a3287}
+.btn.fundamental-battuta{background:#ffe0bd;border-color:#f0b782;color:#804518}
+/* Pulsanti secondari, navigazione, archivio e gestione partita */
+.btn{color:#23445f;background:#e6f0fc;border-color:#b6cde7}
+.btn:active{filter:brightness(.94);transform:scale(.97)}
+.btn:focus-visible{outline:3px solid #3975ce;outline-offset:3px}
+.btn.primary{background:#bed6ff;color:#173e7d;border-color:#7fa7e9}
+.btn.bad{background:#ffd4dc;color:#8a293f;border-color:#ec98a9}
+.btn.ghost{background:#fff;color:#365878;border-color:#c6d8ec}
+.btn.selected{background:#bdd5ff;color:#163c7c;border-color:#6696df}
+.btn.grade-perfect{background:#b9efc8;border-color:#64c78b;color:#155b32}
+.btn.grade-positive{background:#cef2dc;border-color:#87d0a2;color:#165b3b}
+.btn.grade-low{background:#ffe9b4;border-color:#e7bd65;color:#725014}
+.btn.grade-short{background:#ffdbc1;border-color:#e8ac82;color:#84431e}
+.btn.grade-long{background:#e6d6fa;border-color:#ba9ae2;color:#593581}
+.btn.grade-negative{background:#ffddb8;border-color:#dfa76d;color:#774516}
+.btn.grade-error{background:#ffd0d9;border-color:#e993a5;color:#88273d}
+.btn.grade-easy{background:#dbe9f8;border-color:#acc9e6;color:#2c5278}
+.btn.grade-neutral{background:#d1e5ff;border-color:#91b8e8;color:#25517e}
+.btn.grade-touch{background:#c5f0f1;border-color:#83d0d2;color:#1c6669}
+.btn.type-banda{background:#c8dcff;border-color:#8baef0;color:#183e7b}
+.btn.type-centrale{background:#e5d6fb;border-color:#bca0e9;color:#5a3287}
+.btn.type-opposto{background:#ffe0bd;border-color:#f0b782;color:#804518}
+.btn.setter-attack{background:#c4f0e7;border-color:#86d0c0;color:#145f53}
+.tip{background:#e4f0ff;color:#355d83}
+.pill{background:#dcf5e8;color:#176c49}
+.stat{background:#f0f6ff}.bar{background:#e1ebf7}.bar>div{background:#7ca9ed}
+label{color:#3d5c79}
+input[type=text],input[type=date],select{background:#fff;color:#193650;border-color:#adc4dc}
+input[type=checkbox]{accent-color:#4b83d4}
+table td,table th{border-bottom-color:#dce8f5}
+table th{color:#466581}
+.court{border:2px solid #b7cde5;background:#eaf3ff}
+@media print{html,body,.app{background:#fff;color:#111}.panel,.stat{background:#fff;color:#111;border-color:#bbb}}
+</style>
 </head><body><main class="app" id="app"></main><div class="toast" id="toast"></div><script src="app.js" defer></script></body></html>
